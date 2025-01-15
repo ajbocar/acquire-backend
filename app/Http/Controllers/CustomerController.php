@@ -6,10 +6,38 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * @OA\Info(
+ *     title="Customer API",
+ *     version="1.0.0",
+ *     description="API for managing customers"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Customers",
+ *     description="Operations related to customers"
+ * )
+ */
 class CustomerController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/customers",
+     *     summary="Get all customers",
+     *     description="Retrieve a list of all customers.",
+     *     operationId="getCustomers",
+     *     tags={"Customers"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of customers",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Customer"))
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No customers found",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="No customers found"))
+     *     )
+     * )
      */
     public function index()
     {
@@ -21,7 +49,27 @@ class CustomerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/customers",
+     *     summary="Create a new customer",
+     *     description="Add a new customer to the database.",
+     *     operationId="createCustomer",
+     *     tags={"Customers"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Customer created",
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error creating customer",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Error creating customer"))
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -42,7 +90,30 @@ class CustomerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/customers/{id}",
+     *     summary="Get customer by ID",
+     *     description="Retrieve details of a specific customer.",
+     *     operationId="getCustomerById",
+     *     tags={"Customers"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Customer ID",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Customer details",
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Customer not found",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Customer not found"))
+     *     )
+     * )
      */
     public function show(Customer $customer)
     {
@@ -53,7 +124,34 @@ class CustomerController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/customers/{id}",
+     *     summary="Update customer",
+     *     description="Update the details of an existing customer.",
+     *     operationId="updateCustomer",
+     *     tags={"Customers"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Customer ID",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Customer updated",
+     *         @OA\JsonContent(ref="#/components/schemas/Customer")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Customer not found",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Customer not found"))
+     *     )
+     * )
      */
     public function update(Request $request, Customer $customer)
     {
@@ -78,7 +176,34 @@ class CustomerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/customers/{id}",
+     *     summary="Delete customer",
+     *     description="Delete an existing customer.",
+     *     operationId="deleteCustomer",
+     *     tags={"Customers"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Customer ID",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Customer deleted"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Customer not found",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Customer not found"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error deleting customer",
+     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Error deleting customer"))
+     *     )
+     * )
      */
     public function destroy(Customer $customer)
     {
