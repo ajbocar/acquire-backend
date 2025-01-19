@@ -3,6 +3,8 @@ must have laravel sail setup
 ./vendor/bin/sail up -d
 ./vendor/bin/sail artisan migrate
 ./vendor/bin/sail artisan db:seed
+./vendor/bin/sail artisan passport:keys
+./vendor/bin/sail artisan passport:client --personal
 ./vendor/bin/sail l5-swagger:generate
 
 
